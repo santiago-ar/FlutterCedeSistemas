@@ -47,6 +47,10 @@ class _LoginViewState extends State<LoginView> {
     navigator.push(route: SignUpView.route, key: navigator.authNavigatorKey);
   }
 
+  void navigateToForget() {
+    navigator.push(route: ForgetPassword.route, key: navigator.authNavigatorKey);
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -123,7 +127,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   InkWell(
                     onTap: () {
-                      print('tap on link');
+                     navigateToForget();
                     },
                     child: Text(
                       'Forgot Password',
