@@ -12,9 +12,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   TextEditingController emailController = TextEditingController();
 
   String? emailError;
+
 //validEmail?
-  bool get disableButton =>
-      emailController.text.isEmpty;
+  bool get disableButton => emailController.text.isEmpty;
+
+  Future<void> forget() async {
+    print(emailController.text);
+    repository.restorePassword(email: emailController.text);
+  }
 
   void onValidateEmail(String email) {
     RegExp regex = RegExp(
@@ -85,15 +90,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 SizedBox(
                   height: SizeConfig.screenHeight! * 0.09,
                 ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-                //logica de enviar correo
-                child: Button(
-                  label: 'Send',
-                  disable: disableButton,
-                  onPress: () {},
-                )
-          ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    //logica de enviar correo
+                    child: Button(
+                      label: 'Send',
+                      disable: disableButton,
+                      onPress: forget,
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
