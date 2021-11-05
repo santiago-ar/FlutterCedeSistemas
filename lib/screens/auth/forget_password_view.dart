@@ -12,6 +12,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   TextEditingController emailController = TextEditingController();
 
   String? emailError;
+//validEmail?
+  bool get disableButton =>
+      emailController.text.isEmpty;
 
   void onValidateEmail(String email) {
     RegExp regex = RegExp(
@@ -87,6 +90,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 //logica de enviar correo
                 child: Button(
                   label: 'Send',
+                  disable: disableButton,
                   onPress: () {},
                 )
           ),
