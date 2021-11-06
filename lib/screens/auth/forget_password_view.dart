@@ -14,13 +14,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   String? emailError;
 
 //validEmail?
-  bool get disableButton => emailController.text.isEmpty;
+  bool get disableButton => validateEmail(emailController.text) && emailController.text.isNotEmpty ;
 
   Future<void> forget() async {
     print(emailController.text);
     repository.restorePassword(email: emailController.text);
   }
-
+ bool validateEmail(email){
+   RegExp regex = RegExp(
+       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+   bool isValid = regex.hasMatch(email.trim());
+    return isValid;
+  }
   void onValidateEmail(String email) {
     RegExp regex = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -92,10 +97,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 ),
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
-                    //logica de enviar correo
+
                     child: Button(
                       label: 'Send',
-                      disable: disableButton,
+                      disable: !disableButton,
                       onPress: forget,
                     )),
                 Row(
