@@ -1,25 +1,19 @@
 library app.auth;
 
-// ignore: import_of_legacy_library_into_null_safe
-
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttergram/bloc/bloc.dart';
 import 'package:fluttergram/helpers/navigator.dart';
 import 'package:fluttergram/locator.dart';
-import 'package:fluttergram/screens/home/home_view.dart';
-
 import 'package:fluttergram/ui_shared/constanst.dart';
 import 'package:fluttergram/ui_shared/size_config.dart';
 import 'package:fluttergram/widgets/button.dart';
 import 'package:fluttergram/widgets/input.dart';
 import 'package:fluttergram/widgets/social_button.dart';
 
-import 'package:fluttergram/repository/auth_repository.dart';
-
+part 'forget_password_view.dart';
 part 'login_view.dart';
 part 'sign_up_view.dart';
-part 'forget_password_view.dart';
 
 class AuthView extends StatelessWidget {
   static String route = '/auth';
@@ -29,7 +23,6 @@ class AuthView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Navigator(
       initialRoute: LoginView.route,
-     // initialRoute: ForgetPassword.route,
       key: navigator.authNavigatorKey,
       onGenerateRoute: autheticationRouteStack,
     );

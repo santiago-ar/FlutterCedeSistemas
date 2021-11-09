@@ -6,6 +6,7 @@ class TimelineView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    AuthBLoC authBLoC = BlocProvider.of<AuthBLoC>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -26,7 +27,41 @@ class TimelineView extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Center(
-                child: Text('Timeline view'),
+                child: BlocBuilder<AuthBLoC, AuthState>(
+                  builder: (BuildContext context, AuthState state) => Row(
+                    children: [
+                      SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: textColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.photo_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pepito Perez',
+                          ),
+                          Text(
+                            state.user?.email ?? '',
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               )
             ],
           ),

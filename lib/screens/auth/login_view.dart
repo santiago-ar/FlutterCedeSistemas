@@ -8,7 +8,6 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final NavigatorService navigator = locator<NavigatorService>();
-  final AuthRepository repository = locator<AuthRepository>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -17,14 +16,6 @@ class _LoginViewState extends State<LoginView> {
 
   bool get disableButton =>
       emailController.text.isEmpty || passwordController.text.isEmpty;
-
-  Future<void> login() async {
-    User? user = await repository.login(
-        email: emailController.text, password: passwordController.text);
-    if (user != null) {
-      navigator.replace(route: HomeView.route);
-    }
-  }
 
   void onValidatePass(String value) {
     setState(() {
@@ -43,17 +34,17 @@ class _LoginViewState extends State<LoginView> {
     });
   }
 
-  void navigateToSignUp() {
-    navigator.push(route: SignUpView.route, key: navigator.authNavigatorKey);
+
+  void navigateTo(String route) {
+    navigator.push(route: route, key: navigator.authNavigatorKey);
   }
 
-  void navigateToForget() {
-    navigator.push(route: ForgetPassword.route, key: navigator.authNavigatorKey);
-  }
+
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    AuthBLoC authBLoC = BlocProvider.of<AuthBLoC>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -127,7 +118,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   InkWell(
                     onTap: () {
-                     navigateToForget();
+                      navigateTo(ForgetPassword.route);
                     },
                     child: Text(
                       'Forgot Password',
@@ -143,7 +134,11 @@ class _LoginViewState extends State<LoginView> {
               ),
               Button(
                 label: 'Sing In',
-                onPress: login,
+                onPress: () {
+                  authBLoC.add(Login(
+                      email: emailController.text,
+                      password: passwordController.text));
+                },
                 disable: disableButton,
               ),
               SizedBox(
@@ -184,7 +179,7 @@ class _LoginViewState extends State<LoginView> {
                     "Don't have an account? ",
                   ),
                   InkWell(
-                    onTap: navigateToSignUp,
+                    onTap: (){navigateTo(SignUpView.route);},
                     child: Text(
                       'Sign Up',
                       style: TextStyle(color: primaryColor),
@@ -192,6 +187,16 @@ class _LoginViewState extends State<LoginView> {
                   )
                 ],
               ),
+              BlocBuilder<AuthBLoC, AuthState>(
+                  builder: (BuildContext context, AuthState state) {
+                    print('error from view ${state.error}');
+                    return state.error == null
+                        ? SizedBox()
+                        : Text(
+                      state.error ?? '',
+                      style: TextStyle(color: primaryColor, fontSize: 16),
+                    );
+                  })
             ],
           ),
         ),

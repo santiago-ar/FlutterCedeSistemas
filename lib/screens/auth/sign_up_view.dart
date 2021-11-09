@@ -7,7 +7,6 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  final AuthRepository repository = locator<AuthRepository>();
   final NavigatorService navigator = locator<NavigatorService>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -44,19 +43,10 @@ class _SignUpViewState extends State<SignUpView> {
     });
   }
 
-  Future<void> register() async {
-    User? user = await repository.register(
-      email: emailController.text,
-      password: passwordController.text,
-    );
-    if (user != null) {
-      navigator.replace(route: HomeView.route);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    AuthBLoC authBLoC = BlocProvider.of<AuthBLoC>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -127,7 +117,14 @@ class _SignUpViewState extends State<SignUpView> {
               SizedBox(
                 height: getProportionsScreenHeigth(24),
               ),
-              Button(label: 'Sing In', onPress: register),
+              Button(
+                label: 'Sing In',
+                onPress: () {
+                  authBLoC.add(SignUp(
+                      email: emailController.text,
+                      password: passwordController.text));
+                },
+              ),
               SizedBox(
                 height: getProportionsScreenHeigth(24),
               ),

@@ -1,6 +1,8 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttergram/bloc/bloc.dart';
 import 'package:fluttergram/helpers/navigator.dart';
 import 'package:fluttergram/locator.dart';
 import 'package:fluttergram/routes/router.dart';
@@ -10,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
   await setupApp();
-  runApp(MyApp());
+  runApp(AppState());
 }
 
 Future<void> setupApp() async {
@@ -18,6 +20,18 @@ Future<void> setupApp() async {
     await Firebase.initializeApp();
   } on Exception catch (e) {
     debugPrint('setup firebase error : ${e.toString()}');
+  }
+}
+
+class AppState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBLoC>(create: (_) => AuthBLoC()),
+      ],
+      child: MyApp(),
+    );
   }
 }
 

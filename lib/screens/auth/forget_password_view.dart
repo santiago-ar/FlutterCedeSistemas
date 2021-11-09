@@ -8,18 +8,12 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   final NavigatorService navigator = locator<NavigatorService>();
-  final AuthRepository repository = locator<AuthRepository>();
   TextEditingController emailController = TextEditingController();
 
   String? emailError;
 
-//validEmail?
   bool get disableButton => validateEmail(emailController.text) && emailController.text.isNotEmpty ;
 
-  Future<void> forget() async {
-    print(emailController.text);
-    repository.restorePassword(email: emailController.text);
-  }
  bool validateEmail(email){
    RegExp regex = RegExp(
        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -42,6 +36,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    AuthBLoC authBLoC = BlocProvider.of<AuthBLoC>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -101,7 +96,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     child: Button(
                       label: 'Send',
                       disable: !disableButton,
-                      onPress: forget,
+                      onPress:() {
+                        authBLoC.add(Forget(
+                            email: emailController.text));
+                      },
                     )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

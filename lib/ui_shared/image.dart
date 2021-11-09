@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ImageFactory {
   static Widget fromAssets(
       {required String asset,
-      required double width,
-      required double height,
-      BoxFit fit = BoxFit.contain}) {
+        required double width,
+        required double height,
+        BoxFit fit = BoxFit.contain}) {
     if (asset.endsWith('svg')) {
       return svg(
         asset,
@@ -24,12 +24,12 @@ class ImageFactory {
   }
 
   static Widget svg(
-    String name, {
-    required double height,
-    required double width,
-    fit = BoxFit.contain,
-    Color? color,
-  }) {
+      String name, {
+        required double height,
+        required double width,
+        fit = BoxFit.contain,
+        Color? color,
+      }) {
     return SvgPicture.asset(
       name,
       width: width,

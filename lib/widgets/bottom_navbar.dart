@@ -6,12 +6,16 @@ import 'package:fluttergram/ui_shared/constanst.dart';
 import 'package:fluttergram/ui_shared/image.dart';
 import 'package:fluttergram/ui_shared/size_config.dart';
 
-enum MenuPage { home, fovourites, messages, profile }
+enum MenuPage { home, favourites, messages, profile }
 
 class BottomNavbar extends StatelessWidget {
   BottomNavbar({required this.currentPage, Key? key}) : super(key: key);
   final MenuPage currentPage;
   final NavigatorService navigator = locator<NavigatorService>();
+
+  void navigateTo(String route) {
+    navigator.push(route: route, key: navigator.homeNavigatorKey);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +41,21 @@ class BottomNavbar extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  navigator.push(
-                      route: TimelineView.route,
-                      key: navigator.homeNavigatorKey);
+                  navigateTo(TimelineView.route);
                 },
                 icon: ImageFactory.svg(
                   'assets/icons/home.svg',
                   height: getProportionsScreenHeigth(32),
                   width: getProportionsScreenWidth(32),
                   color: currentPage == MenuPage.home
-                      ? Colors.blue
+                      ? primaryColor
                       : disablePrimaryColor,
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  //navigateTo(TimelineView.route);
+                },
                 icon: ImageFactory.fromAssets(
                   asset: 'assets/icons/heart.svg',
                   height: getProportionsScreenHeigth(32),
@@ -76,7 +80,9 @@ class BottomNavbar extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  //navigateTo(ProfileView.route);
+                },
                 icon: ImageFactory.fromAssets(
                   asset: 'assets/icons/chat.svg',
                   height: getProportionsScreenHeigth(32),
@@ -85,14 +91,15 @@ class BottomNavbar extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  navigator.push(
-                      route: ProfileView.route,
-                      key: navigator.homeNavigatorKey);
+                  navigateTo(ProfileView.route);
                 },
-                icon: ImageFactory.fromAssets(
-                  asset: 'assets/icons/user.svg',
+                icon: ImageFactory.svg(
+                  'assets/icons/user.svg',
                   height: getProportionsScreenHeigth(32),
                   width: getProportionsScreenWidth(32),
+                  color: currentPage == MenuPage.profile
+                      ? primaryColor
+                      : disablePrimaryColor,
                 ),
               ),
             ],
